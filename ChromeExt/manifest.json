@@ -7,6 +7,7 @@
     "matches": [
       "<all_urls>"
     ],
+    "css": ["grid.css"],
     "js": ["content.js"]
   }
 ]
