@@ -1,10 +1,47 @@
+var num_data_points = 100;
+var threshold = 90;
+
+var h = screen.availHeight;
+var w = screen.availWidth;
+var num_rows = 3;
+var num_cols = 3;
+var num_boxes = num_rows * num_cols;
+
+queue = [];
+for (var i =0; i < num_data_points; i++) {
+	queue.push(i % num_boxes);
+}
+var counts = [];
+// initialize counts
+for (var i = 0; i < num_boxes; i++) {
+	counts.push(Math.round(num_data_points/num_boxes));
+}
+
+var pword = [];
+
+funciton getBox(x, y) {
+	var row = Math.floor(y/h * num_rows);
+	var col = Math.floor(x/w * num_cols);
+	return row*num_cols + col;
+}
+
 window.onload = function() {
     webgazer.setRegression('ridge') /* currently must set regression and tracker */
         .setTracker('clmtrackr')
         .setGazeListener(function(data, clock) {
-         //   console.log(data); /* data is an object containing an x and y key which are the x and y prediction coordinates (no bounds limiting) */
-         //   console.log(clock); /* elapsed time in milliseconds since webgazer.begin() was called */
-        })
+        	var box = getBox(data.x, data.y);
+        	queue.push(box);
+        	counts[queue.shift()] -= 1;
+        	counts[box] += 1;
+        	for (var i = 0; i < num_boxes; i++) {
+        		if (counts[i] > threshold) {
+        			if ((pword.length == 0) || (pword[pword.length - 1] != i)) {
+        				console.log("added to pword " + i);
+        				pword.push(i);
+        			}
+        		}
+        	}
+         })
         .begin()
         .showPredictionPoints(true); /* shows a square every 100 milliseconds where current prediction is */
     var width = 320;
