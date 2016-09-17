@@ -1,5 +1,5 @@
-var num_data_points = 100;
-var threshold = 90;
+var num_data_points = 60;
+var threshold = 0.85 * num_data_points;
 
 var h = screen.availHeight;
 var w = screen.availWidth;
@@ -19,28 +19,66 @@ for (var i = 0; i < num_boxes; i++) {
 
 var pword = [];
 
-funciton getBox(x, y) {
+function getBox(x, y) {
 	var row = Math.floor(y/h * num_rows);
+    if (row > num_rows - 1) {
+        row = num_rows - 1;
+    }
+    if (row < 0) {
+        row = 0;
+    }
+    if (row > num_cols - 1) {
+        col = num_cols - 1;
+    }
+    if (row < 0) {
+        col = 0;
+    }
 	var col = Math.floor(x/w * num_cols);
 	return row*num_cols + col;
 }
+
+var recording = false;
+var count = 0;
+var start;
+var end;
+window.onkeypress = function(evt) {
+    if (evt.keyCode == 32) {
+        if (recording) {
+            end = (new Date()).getTime();
+            console.log("rate: " + count/((end-start)/1000) + " Hz");
+            console.log(pword);
+            pword=[];
+        } else {
+            start = (new Date()).getTime();
+        }
+        recording = !recording;
+    }
+};
 
 window.onload = function() {
     webgazer.setRegression('ridge') /* currently must set regression and tracker */
         .setTracker('clmtrackr')
         .setGazeListener(function(data, clock) {
-        	var box = getBox(data.x, data.y);
-        	queue.push(box);
-        	counts[queue.shift()] -= 1;
-        	counts[box] += 1;
-        	for (var i = 0; i < num_boxes; i++) {
-        		if (counts[i] > threshold) {
-        			if ((pword.length == 0) || (pword[pword.length - 1] != i)) {
-        				console.log("added to pword " + i);
-        				pword.push(i);
-        			}
-        		}
-        	}
+            if (recording) {
+                if (data == null) {
+                    return;
+                }
+                count += 1;
+                var box = getBox(data.x, data.y);
+                queue.push(box);
+                counts[queue.shift()] -= 1;
+                counts[box] += 1;
+                console.log(box);
+                for (var i = 0; i < num_boxes; i++) {
+                    if (counts[i] > threshold) {
+                        if ((pword.length == 0) || (pword[pword.length - 1] != i)) {
+                            console.log("added to pword " + i);
+                            console.log(counts/num_data_points);
+                            pword.push(i);
+                        }
+                    }
+                }
+            }
          })
         .begin()
         .showPredictionPoints(true); /* shows a square every 100 milliseconds where current prediction is */
