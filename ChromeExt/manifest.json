@@ -7,7 +7,7 @@
     "matches": [
       "<all_urls>"
     ],
-    "css": ["grid.css"],
+    "css": ["popup.css"],
     "js": ["content.js"]
   }
 ]
