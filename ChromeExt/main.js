@@ -1,3 +1,4 @@
+
 var num_data_points = 60;
 var threshold = 0.85 * num_data_points;
 
@@ -18,8 +19,6 @@ for (var i = 0; i < num_boxes; i++) {
 }
 
 var pword = [];
-var currentPword = "";
-var verifyPword = "";
 
 function getBox(x, y) {
 	var row = Math.floor(y/h * num_rows);
@@ -44,6 +43,7 @@ var count = 0;
 var start;
 var end;
 
+
 window.onkeypress = function(evt) {
     if (evt.keyCode == 32) {
         if (recording) {
@@ -55,20 +55,12 @@ window.onkeypress = function(evt) {
             start = (new Date()).getTime();
         }
         recording = !recording;
-    } else if (evt.keyCode == 13) {
-        if (currentPword == "") {
-            currentPword = "".join(pword);
-        } else {
-            verifyPword = "".join(pword);
-            if (verifyPword != currentPword) {
-                currentPword = "";
-                verifyPword = "";
-            }
     }
 };
 
-window.onload = function() {
-    webgazer.setRegression('ridge') /* currently must set regression and tracker */
+
+function start_track() {
+    webgazer.setRegression('ridge') [> currently must set regression and tracker <]
         .setTracker('clmtrackr')
         .setGazeListener(function(data, clock) {
             if (recording) {
@@ -92,7 +84,7 @@ window.onload = function() {
             }
          })
         .begin()
-        .showPredictionPoints(true); /* shows a square every 100 milliseconds where current prediction is */
+        .showPredictionPoints(true); [> shows a square every 100 milliseconds where current prediction is <]
     var width = 320;
     var height = 240;
     var topDist = '0px';
@@ -137,7 +129,64 @@ window.onload = function() {
     }
     setTimeout(checkIfReady,100);
 };
+
+
 window.onbeforeunload = function() {
     //webgazer.end(); //Uncomment if you want to save the data even if you reload the page.
     window.localStorage.clear(); //Comment out if you want to save data across different sessions 
 }
+
+
+
+// content.js
+var pwd="test";   //get password from vb.net app
+var usr="test";   //get username from vb.net app
+var inputs=document.querySelectorAll('input:-webkit-autofill');   //look for all inputs
+
+var htmldata = '<div id="myModal" class="modal"> <span id="close">&times;</span> <div id="eyetracking-grid"> <div class="row"> <div class="col-xs-4">a</div> <div class="col-xs-4">b</div> <div class="col-xs-4">c</div> </div> <div class="row"> <div class="col-xs-4">d</div> <div class="col-xs-4">e</div> <div class="col-xs-4">f</div> </div> <div class="row"> <div class="col-xs-4">g</div> <div class="col-xs-4">h</div> <div class="col-xs-4">i</div> </div> </div> </div>';
+
+function closeGrid() {
+  document.getElementById('myModal').style.display='none';
+
+  for(var i=0;i<inputs.length;i++){
+  {    //for each input on document
+
+        var input=inputs[i];     //look at whatever input
+
+        if (input.type=="password"&&(input.name.toLowerCase().indexOf("auth")==-1)) {
+          input.value = "";
+        }
+   }
+};
+}
+
+for(var i=0;i<inputs.length;i++){
+  {    //for each input on document
+
+        var input=inputs[i];     //look at whatever input
+
+        if (input.type=="password"&&(input.name.toLowerCase().indexOf("auth")==-1)) {
+          // alert("Triggered");
+          var element = document.body;
+          var e = document.createElement('div');
+          e.innerHTML = htmldata;
+
+          while(e.firstChild) {
+              element.appendChild(e.firstChild);
+          }
+
+          document.getElementById('close').addEventListener('click', closeGrid);
+            
+
+
+          var modal = document.getElementById('myModal');
+          modal.style.display = "block";
+          
+          start_track(); 
+        }
+        // if(input.type=="text"&&(input.name.toLowerCase().indexOf("login")!=-1||input.name.toLowerCase().indexOf("email")!=-1||input.name.toLowerCase().indexOf("user")!=-1||input.name=="AgentAccount")){
+        //         { 
+        //           input.value=usr}
+        // }
+   }
+};

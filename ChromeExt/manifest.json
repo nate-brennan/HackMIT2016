@@ -8,7 +8,7 @@
       "<all_urls>"
     ],
     "css": ["popup.css"],
-    "js": ["content.js"]
+    "js": [ "WebGazer.js" ]
   }
 ]
 
