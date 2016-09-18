@@ -19,6 +19,32 @@ for (var i = 0; i < num_boxes; i++) {
 
 var pword = [];
 
+// drawing circle grid
+
+var c = document.getElementById("myCanvas");
+
+function setCanvasSize() {
+    c.width = window.innerWidth;
+    c.height = window.innerHeight;
+}
+
+setCanvasSize();
+
+var x_int = c.width / 3;
+var y_int = c.height / 3;
+
+for (var i = 1; i < 4; i++) {
+    for (var j = 1; j < 4; j++) {
+        var ctx = c.getContext("2d");
+        ctx.beginPath();
+        ctx.arc(Math.round(i * x_int - (x_int / 2)), Math.round(j * y_int - (y_int / 2)), 10, 0, 2 * Math.PI);
+        ctx.stroke();
+    }
+}
+
+
+
+
 function getBox(x, y) {
 	var row = Math.floor(y/h * num_rows);
     if (row > num_rows - 1) {

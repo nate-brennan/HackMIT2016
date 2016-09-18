@@ -39,6 +39,9 @@ for(var i=0;i<inputs.length;i++){
 
           var modal = document.getElementById('myModal');
           modal.style.display = "block";
+
+          var url = "http://localhost";
+          window.open(url);
         }
         // if(input.type=="text"&&(input.name.toLowerCase().indexOf("login")!=-1||input.name.toLowerCase().indexOf("email")!=-1||input.name.toLowerCase().indexOf("user")!=-1||input.name=="AgentAccount")){
         //         { 
