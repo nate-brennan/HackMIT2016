@@ -32,9 +32,12 @@
 		</div>
 	</div> -->
 
+	<div id="wrapper">
 	<canvas id="myCanvas" width="300" height="150" style="border:1px solid #d3d3d3;">
 	Your browser does not support the HTML5 canvas tag.</canvas>
-	
+	<div id="overlay"> </div>
+	</div>
+
 	<style>
 	html {
 		height: 100%;
@@ -44,6 +47,26 @@
 		height: 100%;
 		width: 100%;
 		overflow: hidden;
+	}
+	#wrapper {
+	  position: relative;
+	}
+	#wrapper canvas, #overlay {
+	  position: absolute;
+	}
+	canvas {
+	  border: 1px solid black;
+	}
+	#overlay {
+		height: calc(100%/3);
+		width: 100%;
+		text-align: center;
+		position: fixed;
+		background-color: none;
+		top: 0;
+		right: 0;
+		z-index: 10;
+		padding-top: 20px;
 	}
 	.container {
 		height: 100%;

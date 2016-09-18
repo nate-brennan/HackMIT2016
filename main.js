@@ -90,6 +90,7 @@ window.onkeypress = function(evt) {
                 currentPword = "";
                 verifyPword = "";
             }
+        }
     }
 };
 
