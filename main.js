@@ -44,9 +44,6 @@ for (var i = 1; i < 4; i++) {
     }
 }
 
-
-
-
 function getBox(x, y) {
 	var row = Math.floor(y/h * num_rows);
     if (row > num_rows - 1) {
@@ -70,6 +67,16 @@ var count = 0;
 var start;
 var end;
 
+var index = 0;
+var texts = ["Please create a password.  Press <space> to toggle password recording and press <enter> to submit password", "Please verify your password"];
+
+var texts2 = ["Password verified", "Password verification failed"];
+
+
+$( "#done-button" ).click(function() {
+    $('#container').text = texts[index++];
+});
+
 window.onkeypress = function(evt) {
     if (evt.keyCode == 32) {
         if (recording) {
@@ -89,6 +96,9 @@ window.onkeypress = function(evt) {
             if (verifyPword != currentPword) {
                 currentPword = "";
                 verifyPword = "";
+                $('#container').text = texts2[1];
+            } else {
+                $('#container').text = texts2[0];
             }
         }
     }
